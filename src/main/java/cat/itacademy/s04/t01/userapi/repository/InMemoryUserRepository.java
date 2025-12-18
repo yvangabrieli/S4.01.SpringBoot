@@ -7,34 +7,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private final List<User> users = new ArrayList<>();
 
-@Override
-    public User save (User user){
-    users.add(user);
-    return user;
-}
-@Override
-    public List<User> findAll(){
-    return users;
-}
     @Override
-    public Optional<User> findById(UUID id){
+    public User save(User user) {
+        users.add(user);
+        return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return users;
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
         return users.stream()
-                .filter(u->u.getId().equals(id))
+                .filter(u -> u.getId().equals(id))
                 .findFirst();
     }
+
     @Override
-    public Optional <User> searchByName(String name){
+    public Optional<User> searchByName(String name) {
         return users.stream()
-                .filter(u->u.getName().toLowerCase().contains(name.toLowerCase()))
+                .filter(u -> u.getName().toLowerCase().contains(name.toLowerCase()))
                 .findFirst();
     }
+
     @Override
-    public boolean existsByEmail(String email){
+    public boolean existsByEmail(String email) {
         return users.stream()
-                .anyMatch(u->u.getEmail().equalsIgnoreCase(email));
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 }

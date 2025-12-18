@@ -9,33 +9,37 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserServiceImpl (UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-@Override
-    public User create (User user) {
-    if (userRepository.existsByEmail(user.getEmail())) {
-        throw new EmailAlreadyExistsException(user.getEmail());
+    @Override
+    public User create(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new EmailAlreadyExistsException(user.getEmail());
+        }
+        user.setId(UUID.randomUUID());
+        return userRepository.save(user);
     }
-    user.setId(UUID.randomUUID());
-    return userRepository.save(user);
-    }
-@Override
-public List<User> findAll(){
+
+    @Override
+    public List<User> findAll() {
         return userRepository.findAll();
     }
-@Override
-    public Optional <User> findById (UUID id){
+
+    @Override
+    public Optional<User> findById(UUID id) {
         return Optional.ofNullable(userRepository.findById(id).
                 orElseThrow(() -> new UserNotFoundException(id)));
-}
-@Override
-    public Optional<User> findByName (String name) {
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
         return userRepository.searchByName(name);
     }
 

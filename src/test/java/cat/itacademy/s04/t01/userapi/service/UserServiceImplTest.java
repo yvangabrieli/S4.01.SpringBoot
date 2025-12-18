@@ -22,6 +22,7 @@ public class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
     User userAda = new User(null, "Ada", "ada@example.com");
+
     @Test
     void createUser_shouldThrowExceptionWhenEmailAlreadyExists() {
         String email = "ada@example.com";
@@ -57,7 +58,7 @@ public class UserServiceImplTest {
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
         Optional<User> result = userService.findById(id);
-        assertTrue (result.isPresent());
+        assertTrue(result.isPresent());
         assertEquals("Ada", result.get().getName());
     }
 }
